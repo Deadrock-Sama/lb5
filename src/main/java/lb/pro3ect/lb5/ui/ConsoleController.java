@@ -23,7 +23,7 @@ public class ConsoleController implements UIController {
 
             scanner = scanners.pop();
             files.pop();
-            fileMode = scanners.capacity() > 0;
+            fileMode = scanners.size() > 0;
         }
 
     }
@@ -36,16 +36,22 @@ public class ConsoleController implements UIController {
     public void validateFilesReading() {
 
         scanner = scanners.pop();
-        if (files.capacity() > 0)
+        if (files.size() > 0)
             files.pop();
 
-        fileMode = scanners.capacity() > 0;
+        fileMode = scanners.size() > 0;
 
     }
 
     @Override
     public void show(String message) {
         System.out.println(message);
+    }
+
+    @Override
+    public void show(String message, boolean showInFileMode) {
+        if(showInFileMode || !fileMode)
+            show(message);
     }
 
     @Override
@@ -61,8 +67,9 @@ public class ConsoleController implements UIController {
 
         if (fileMode)
             validateFilesReading();
+        else
+            skipWrongInput();
 
-        skipWrongInput();
         return readString(message);
     }
 
@@ -80,8 +87,9 @@ public class ConsoleController implements UIController {
 
         if (fileMode)
             validateFilesReading();
+        else
+            skipWrongInput();
 
-        skipWrongInput();
         return readDouble(message);
 
     }
@@ -100,8 +108,9 @@ public class ConsoleController implements UIController {
 
         if (fileMode)
             validateFilesReading();
+        else
+            skipWrongInput();
 
-        skipWrongInput();
         return readInteger(message);
 
     }
@@ -120,8 +129,9 @@ public class ConsoleController implements UIController {
 
         if (fileMode)
             validateFilesReading();
+        else
+            skipWrongInput();
 
-        skipWrongInput();
         return readLong(message);
 
     }
@@ -140,8 +150,9 @@ public class ConsoleController implements UIController {
 
         if (fileMode)
             validateFilesReading();
+        else
+            skipWrongInput();
 
-        skipWrongInput();
         return readFloat(message);
 
     }

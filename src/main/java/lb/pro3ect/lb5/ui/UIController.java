@@ -17,4 +17,6 @@ public interface UIController {
     void setFileToRead(String filePath);
 
     boolean isFileMode();
+
+    void show(String message, boolean showInFileMode);
 }

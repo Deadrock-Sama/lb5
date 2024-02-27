@@ -18,7 +18,7 @@ public class ApplicatonInitializer {
             boolean result = commandsController.getCommand(uiController.readString("Введите команду: ")).exexute();
 
             if (result)
-                uiController.show("Команда успешно выполнена!");
+                uiController.show("Команда успешно выполнена!", false);
 
         }
     }

@@ -8,7 +8,7 @@ public class ExecuteScript extends Command {
     @Override
     public boolean exexute() {
 
-        String filePath = getUiController().readString("Введите путь к файлу: ");
+        String filePath = getUiController().readString("Введите путь к файлу: ").replace("\\", "\\\\");
         getUiController().setFileToRead(filePath);
 
         return true;
