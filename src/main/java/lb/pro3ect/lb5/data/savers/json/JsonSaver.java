@@ -2,10 +2,14 @@ package lb.pro3ect.lb5.data.savers.json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import lb.pro3ect.lb5.data.IWorkersRepository;
 import lb.pro3ect.lb5.data.WorkersHashtable;
 import lb.pro3ect.lb5.data.savers.ISaver;
+import lb.pro3ect.lb5.ui.UIController;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -15,11 +19,14 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Scanner;
 
-
+@Component
 public class JsonSaver implements ISaver {
 
     @Value("${jsonKeeper.path}")
     private String jsonPath;
+
+    @Autowired
+    private UIController uiController;
     private Gson gson = new GsonBuilder()
             .registerTypeAdapter(ZonedDateTime.class, new ZonedDateTimeAdapter())
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
@@ -58,9 +65,15 @@ public class JsonSaver implements ISaver {
         String content = scan.next();
         if (content.isEmpty())
             return new WorkersHashtable();
+        try {
+            IWorkersRepository repository = gson.fromJson(content, WorkersHashtable.class);
+            return repository;
+        }
+        catch (JsonSyntaxException e) {
+            uiController.show("Не удалось загрузить сохранение:");
+            uiController.show(e.getMessage());
+            return new WorkersHashtable();
+        }
 
-        IWorkersRepository repository = gson.fromJson(content, WorkersHashtable.class);
-
-        return repository;
     }
 }
