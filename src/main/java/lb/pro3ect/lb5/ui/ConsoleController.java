@@ -158,7 +158,21 @@ public class ConsoleController implements UIController {
     }
 
     private void skipWrongInput() {
+        try {
         scanner.next();
+        }
+        catch (Exception e) {
+            System.exit(1);
+        }
+    }
+
+    {
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                System.out.println("Получен сигнал завершения работы.");
+
+            } } );
     }
 
     private Scanner scanner = new Scanner(System.in);

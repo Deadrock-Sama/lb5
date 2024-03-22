@@ -14,8 +14,6 @@ public class CoordinatesBuilder extends Builder {
         setX();
         setY();
 
-        validateBuilder();
-
         return this;
 
     }
@@ -40,38 +38,11 @@ public class CoordinatesBuilder extends Builder {
 
     }
 
-    private void validateBuilder() {
-
-        if (controller.isFileMode())
-            return;
-
-        while (true) {
-            controller.show("Создастся объект со значениями: " + this);
-            String needToChange = controller.readString("Хотите отредактировать[Y/N]? ");
-            if (needToChange.toUpperCase().equals("Y")) {
-                String fieldToFix = controller.readString("Напишите поле, которое хотите исправить[x, y]: ");
-                switch (fieldToFix.toLowerCase()) {
-                    case "x":
-                        setX();
-                        break;
-                    case "y":
-                        setY();
-                        break;
-                    default:
-                        controller.show("Такого поля нет");
-                }
-
-            } else
-                break;
-        }
-
-    }
-
     private CoordinatesBuilder setX() {
 
         x = -700;
         while (x <= -678) {
-            controller.show("Значение x должно быть больше -678");
+            controller.show("Значение x должно быть больше -678", false);
             x = controller.readDouble("Введите x: ");
         }
         return this;
@@ -82,7 +53,7 @@ public class CoordinatesBuilder extends Builder {
 
         y = null;
         while (y == null) {
-            controller.show("Значение y не должно быть null");
+            controller.show("Значение y не должно быть null", false);
             y = controller.readLong("Введите y: ");
         }
         return this;

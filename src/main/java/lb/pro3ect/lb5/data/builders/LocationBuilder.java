@@ -16,8 +16,6 @@ public class LocationBuilder extends Builder {
         setY();
         setZ();
 
-        validateBuilder();
-
         return this;
 
     }
@@ -44,37 +42,6 @@ public class LocationBuilder extends Builder {
 
     }
 
-    private void validateBuilder() {
-
-        if (controller.isFileMode())
-            return;
-        while (true) {
-            controller.show("Создастся объект со значениями: " + this);
-            String needToChange = controller.readString("Хотите отредактировать[Y/N]? ");
-            if (needToChange.toUpperCase().equals("Y")) {
-                String fieldToFix = controller.readString("Напишите поле, которое хотите исправить[name/x/y/z]: ");
-                switch (fieldToFix.toLowerCase()) {
-                    case "x":
-                        setX();
-                        break;
-                    case "y":
-                        setY();
-                        break;
-                    case "z":
-                        setZ();
-                        break;
-                    case "name":
-                        setName();
-                        break;
-                }
-
-            } else
-                break;
-        }
-
-    }
-
-
     private LocationBuilder setX() {
 
         x = controller.readInteger("Введите x: ");
@@ -86,7 +53,7 @@ public class LocationBuilder extends Builder {
 
         y = null;
         while (y == null) {
-            controller.show("Значение y не должно быть null");
+            controller.show("Значение y не должно быть null", false);
             y = controller.readLong("Введите y: ");
         }
         return this;
@@ -97,7 +64,7 @@ public class LocationBuilder extends Builder {
 
         z = null;
         while (z == null) {
-            controller.show("Значение z не должно быть null");
+            controller.show("Значение z не должно быть null", false);
             z = controller.readFloat("Введите z: ");
         }
         return this;
@@ -109,7 +76,7 @@ public class LocationBuilder extends Builder {
 
         name = null;
         while (name == null || name.length() > 966) {
-            controller.show("Длина имени не должна быть больше 966. Имя не должно быть null.");
+            controller.show("Длина имени не должна быть больше 966. Имя не должно быть null.", false);
             name = controller.readString("Введите имя: ");
         }
         return this;

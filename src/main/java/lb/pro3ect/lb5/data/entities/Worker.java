@@ -1,5 +1,6 @@
 package lb.pro3ect.lb5.data.entities;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -19,10 +20,15 @@ public class Worker implements Comparable<Worker> {
         creationDate = java.time.LocalDateTime.now();
 
     }
-
     public Worker(String name, Coordinates coordinates, Long salary, Position position, Person person, Status status) {
         this(name, coordinates, salary, position, person);
         this.status = status;
+    }
+
+    public Worker(String name, Coordinates coordinates, Long salary, Position position, Person person, Status status, int id, LocalDateTime creationDate) {
+        this(name, coordinates, salary, position, person, status);
+        this.id = id;
+        this.creationDate = creationDate;
     }
 
     public String getName() {

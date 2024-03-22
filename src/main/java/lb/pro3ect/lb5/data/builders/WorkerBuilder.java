@@ -20,8 +20,6 @@ public class WorkerBuilder extends Builder {
         setPosition();
 
         setStatus();
-
-        validateBuilder();
         return this;
 
     }
@@ -51,49 +49,20 @@ public class WorkerBuilder extends Builder {
 
 
     private WorkerBuilder setStatus() {
-        status = Status.valueOf(controller.readString("Введите статус: ").toUpperCase());
-        return this;
-    }
-
-    private void validateBuilder() {
-
-        if (controller.isFileMode())
-            return;
-
-        while (true) {
-            controller.show("Создастся объект со значениями: " + this);
-            String needToChange = controller.readString("Хотите отредактировать[Y/N]? ");
-
-            if (needToChange.toUpperCase().equals("Y")) {
-                String fieldToFix = controller
-                        .readString("Напишите поле, которое хотите исправить[name/person/salary/coord/status]: ");
-                switch (fieldToFix.toLowerCase()) {
-                    case "name":
-                        setName();
-                        break;
-                    case "person":
-                        setPerson();
-                        break;
-                    case "salary":
-                        setSalary();
-                        break;
-                    case "coord":
-                        setCoordinates();
-                        break;
-                }
-
-            } else
-                break;
+        try {
+            status = Status.valueOf(controller.readString("Введите статус: " + Arrays.toString(Status.values()) + ": ").toUpperCase().trim());
+        } catch (IllegalArgumentException e) {
+            controller.show("Данного значения не существует!");
         }
 
+        return this;
     }
-
 
     private WorkerBuilder setName() {
 
         name = null;
         while (name == null) {
-            controller.show("Значение name не должно быть null");
+            controller.show("Значение name не должно быть null", false);
             name = controller.readString("Введите имя: ");
         }
 
@@ -105,7 +74,7 @@ public class WorkerBuilder extends Builder {
 
         coordinates = null;
         while (coordinates == null) {
-            controller.show("Значение coordinates не должно быть null");
+            controller.show("Значение coordinates не должно быть null", false);
             coordinates = new CoordinatesBuilder(controller).setRequiredFields().build();
         }
         return this;
@@ -116,7 +85,7 @@ public class WorkerBuilder extends Builder {
 
         salary = null;
         while (salary == null || salary <= 0) {
-            controller.show("Значение salary не должно быть null и меньше нуля");
+            controller.show("Значение salary не должно быть null и меньше нуля", false);
             salary = controller.readLong("Введите зарплату: ");
         }
         return this;
@@ -127,8 +96,14 @@ public class WorkerBuilder extends Builder {
 
         position = null;
         while (position == null) {
-            controller.show("Значение position не должно быть null. Доступные значения: " + Arrays.toString(Position.values()));
-            position = Position.valueOf(controller.readString("Введите позицию: ").toUpperCase());
+            controller.show("Значение position не должно быть null. Доступные значения: " + Arrays.toString(Position.values()) + ": ", false);
+
+            try {
+                position = Position.valueOf(controller.readString("Введите позицию: ").toUpperCase().trim());
+            } catch (IllegalArgumentException e) {
+                controller.show("Данного значения не существует!");
+            }
+
 
         }
         return this;
@@ -140,7 +115,7 @@ public class WorkerBuilder extends Builder {
 
         person = null;
         while (person == null) {
-            controller.show("Значение person не должно быть null");
+            controller.show("Значение person не должно быть null", false);
             person = new PersonBuilder(controller)
                     .setRequiredFields()
                     .build();
